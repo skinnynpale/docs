@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "almond",
+  "name": "Документация платформы Sasha AI",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -11,92 +11,47 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Документация",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Знакомство с платформой",
+            "pages": ["index", "quickstart"]
+          },
+          {
+            "group": "Подготовка к лидогенерации",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "lead-generation/why-calls-dont-work",
+              "lead-generation/outbound-sales-psychology",
+              "lead-generation/converting-leads-to-revenue"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Обучение искусственного интеллекта",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "ai-training/quick-start",
+              {
+                "group": "Как сделать так, чтобы вы с Сашей поняли друг друга?",
+                "pages": [
+                  "ai-training/understanding-sasha",
+                  "ai-training/what-sasha-knows",
+                  "ai-training/how-to-configure"
+                ]
+              },
+              "ai-training/success-factors",
+              "ai-training/testing",
+              "ai-training/improving-quality",
+              "ai-training/knowledge-base",
+              "ai-training/voice-settings",
+              "ai-training/multilingual",
+              "ai-training/variables"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }
