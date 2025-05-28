@@ -45,6 +45,46 @@
               "ai-training/multilingual",
               "ai-training/variables"
             ]
+          },
+          {
+            "group": "Типовые ошибки: путь к отрицательному ROMI",
+            "pages": [
+              "common-mistakes/approach-to-calling",
+              {
+                "group": "Обучение искусственного интеллекта",
+                "pages": [
+                  "common-mistakes/ai-training/template-approach",
+                  "common-mistakes/ai-training/overtraining",
+                  "common-mistakes/ai-training/configuring-unconfigurable"
+                ]
+              },
+              "common-mistakes/launching-calls"
+            ]
+          },
+          {
+            "group": "Настройка интеграций",
+            "pages": [
+              "integrations/telephony",
+              {
+                "group": "Каналы коммуникаций",
+                "pages": [
+                  "integrations/communication-channels/closing-messages",
+                  "integrations/communication-channels/sms",
+                  "integrations/communication-channels/whatsapp"
+                ]
+              },
+              "integrations/call-results-transfer"
+            ]
+          },
+          {
+            "group": "Запуск звонков",
+            "pages": [
+              "call-launch/account-verification",
+              "call-launch/call-lists",
+              "call-launch/calling-logic",
+              "call-launch/lead-transfer-logic",
+              "call-launch/callback-logic"
+            ]
           }
         ]
       }
