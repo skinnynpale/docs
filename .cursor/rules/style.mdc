@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Используй пожалуйста стили компоненты например как эти страницы [markdown.mdx](mdc:essentials/markdown.mdx) [code.mdx](mdc:essentials/code.mdx) [images.mdx](mdc:essentials/images.mdx) [navigation.mdx](mdc:essentials/navigation.mdx) [settings.mdx](mdc:essentials/settings.mdx) [call-lists.mdx](mdc:call-launch/call-lists.mdx)
+
+Исключения:
+1. Не используем иконки для файла

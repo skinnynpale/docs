@@ -85,6 +85,54 @@
               "call-launch/lead-transfer-logic",
               "call-launch/callback-logic"
             ]
+          },
+          {
+            "group": "Анализ результатов",
+            "pages": [
+              {
+                "group": "Статистика",
+                "pages": ["results-analysis/statistics/dashboard", "results-analysis/statistics/cohort-analysis"]
+              },
+              {
+                "group": "Детализация звонков",
+                "pages": [
+                  "results-analysis/call-details/filtering",
+                  "results-analysis/call-details/call-analysis",
+                  "results-analysis/call-details/csv-export"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Системная информация",
+            "pages": [
+              "system-info/platform-architecture",
+              "system-info/user-rights",
+              {
+                "group": "Уведомления",
+                "pages": [
+                  "system-info/notifications/maintenance",
+                  "system-info/notifications/verification-required",
+                  "system-info/notifications/balance-ending"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Платежи и биллинг",
+            "pages": ["payments-billing/subscriptions", "payments-billing/credit-limit"]
+          },
+          {
+            "group": "База знаний",
+            "pages": ["knowledge-base/direct-questions", "knowledge-base/large-files"]
+          },
+          {
+            "group": "Партнерам",
+            "pages": ["partners/affiliate-program", "partners/training"]
+          },
+          {
+            "group": "Документы",
+            "pages": ["legal/legal-information"]
           }
         ]
       }
