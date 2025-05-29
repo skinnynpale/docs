@@ -96,5 +96,10 @@
   },
   "appearance": {
     "default": "system"
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-8X9D23EEBD"
+    }
   }
 }
