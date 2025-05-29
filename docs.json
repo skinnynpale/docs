@@ -95,6 +95,6 @@
     "dark": "/logo/dark.svg"
   },
   "appearance": {
-    "default": "light"
+    "default": "system"
   }
 }
