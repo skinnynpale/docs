@@ -1,0 +1,427 @@
+---
+title: "Уведомления о событиях"
+description: "Настройка и использование вебхуков для получения уведомлений о событиях в режиме реального времени"
+---
+
+## Обзор
+
+Вебхуки предоставляют возможность получать данные о различных событиях без необходимости постоянно опрашивать API. Система автоматически отправляет HTTP POST-запросы на указанный URL при наступлении выбранных событий.
+
+## Технические характеристики
+
+<CardGroup cols={2}>
+  <Card title="Метод запроса" icon="globe">
+    HTTP POST
+  </Card>
+  <Card title="Формат данных" icon="file-json">
+    JSON
+  </Card>
+  <Card title="Время ответа" icon="clock">
+    HTTP 200 OK (до 10 секунд)
+  </Card>
+  <Card title="Повторные попытки" icon="refresh-cw">
+    Экспоненциальная схема
+  </Card>
+</CardGroup>
+
+<Info>
+При сбое системные вебхуки повторяются по экспоненциальной схеме: 1 мин, 5 мин, 15 мин, 1 час
+</Info>
+
+## Поддерживаемые события
+
+В настоящее время поддерживается следующий тип событий:
+
+<Card title="Результат звонка" icon="phone-call">
+  Получение данных о результатах звонков (статус, длительность, аудио)
+</Card>
+
+## Создание и управление вебхуками
+
+### Создание вебхука
+
+<Steps>
+  <Step title="Перейдите в раздел Колл-листы">
+    Откройте панель управления и найдите раздел с колл-листами
+  </Step>
+  <Step title="Выберите колл-лист">
+    Выберите колл-лист, для которого хотите настроить вебхук
+  </Step>
+  <Step title="Создайте вебхук">
+    В блоке **Вебхуки** нажмите кнопку **Создать вебхук**
+  </Step>
+  <Step title="Настройте параметры">
+    - Введите URL вашего сервера для приема вебхуков
+    - Выберите типы событий, о которых хотите получать уведомления
+    - Добавьте описание (опционально) для удобства управления
+  </Step>
+  <Step title="Сохраните секретный ключ">
+    После создания вам будет показан секретный ключ вебхука. **Сохраните его в надежном месте**, так как он показывается только один раз
+  </Step>
+</Steps>
+
+<Warning>
+Секретный ключ показывается только один раз при создании вебхука и будет использоваться для проверки подлинности запросов.
+</Warning>
+
+## Безопасность и аутентификация
+
+### Заголовки запросов
+
+Каждый запрос вебхука включает следующие HTTP-заголовки:
+
+| Заголовок | Описание |
+|-----------|----------|
+| `Content-Type` | `application/json` |
+| `X-Webhook-Signature` | HMAC SHA-256 подпись тела запроса |
+| `X-Webhook-ID` | Уникальный идентификатор вебхук-события |
+| `X-Webhook-Timestamp` | Время создания запроса в формате ISO 8601 |
+| `X-Call-List-ID` | ID колл-листа, связанного с событием |
+
+### Проверка подлинности запросов (необязательно)
+
+Для обеспечения безопасности все запросы подписываются с использованием вашего секретного ключа вебхука. Это позволяет убедиться, что запросы действительно отправлены нашей платформой.
+
+#### Алгоритм проверки подписи
+
+<Steps>
+  <Step title="Получите подпись">
+    Получите заголовок `X-Webhook-Signature` из входящего запроса
+  </Step>
+  <Step title="Получите тело запроса">
+    Получите исходное тело запроса в виде строки
+  </Step>
+  <Step title="Создайте подпись">
+    Создайте HMAC SHA-256 подпись тела запроса, используя ваш секретный ключ
+  </Step>
+  <Step title="Сравните подписи">
+    Сравните вычисленную подпись с полученной в заголовке
+  </Step>
+</Steps>
+
+<CodeGroup>
+
+```javascript Node.js
+const crypto = require('crypto');
+
+function verifyWebhookSignature(payload, signature, secret) {
+  const computed = crypto
+    .createHmac('sha256', secret)
+    .update(payload)
+    .digest('hex');
+
+  return crypto.timingSafeEqual(
+    Buffer.from(computed, 'hex'),
+    Buffer.from(signature, 'hex')
+  );
+}
+
+// Пример использования в Express
+app.post('/webhook', express.text({ type: 'application/json' }), (req, res) => {
+  const signature = req.headers['x-webhook-signature'];
+  const payload = req.body; // Сырое тело запроса в виде строки
+  const secret = 'ваш_секретный_ключ_вебхука';
+  
+  if (!verifyWebhookSignature(payload, signature, secret)) {
+    return res.status(401).send('Недействительная подпись');
+  }
+  
+  // Парсинг JSON из строки
+  const data = JSON.parse(payload);
+  
+  // Обработка события
+  console.log('Получено событие:', data);
+  res.status(200).send('OK');
+});
+```
+
+```php PHP
+function verifyWebhookSignature($payload, $signature, $secret) {
+    $computed = hash_hmac('sha256', $payload, $secret);
+    return hash_equals($computed, $signature);
+}
+
+// Пример использования
+$signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'];
+$payload = file_get_contents('php://input');
+$secret = 'ваш_секретный_ключ_вебхука';
+
+if (!verifyWebhookSignature($payload, $signature, $secret)) {
+    http_response_code(401);
+    echo 'Недействительная подпись';
+    exit;
+}
+
+$data = json_decode($payload, true);
+echo 'Получено событие';
+```
+
+```python Python
+import hmac
+import hashlib
+import json
+
+def verify_webhook_signature(payload, signature, secret):
+    computed = hmac.new(
+        secret.encode('utf-8'),
+        payload.encode('utf-8'),
+        hashlib.sha256
+    ).hexdigest()
+    
+    return hmac.compare_digest(computed, signature)
+
+# Пример использования в Flask
+from flask import Flask, request
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    signature = request.headers.get('X-Webhook-Signature')
+    payload = request.get_data(as_text=True)
+    secret = 'ваш_секретный_ключ_вебхука'
+    
+    if not verify_webhook_signature(payload, signature, secret):
+        return 'Недействительная подпись', 401
+    
+    data = json.loads(payload)
+    print('Получено событие:', data)
+    return 'OK', 200
+```
+
+</CodeGroup>
+
+<Tip>
+Важно использовать сравнение строк, устойчивое к time-based атакам (например, `crypto.timingSafeEqual()` в Node.js или `hash_equals()` в PHP).
+</Tip>
+
+## Типы событий и форматы данных
+
+### Результат звонка (call_result)
+
+Отправляется после завершения звонка и содержит информацию о результате и записи разговора.
+
+<Expandable title="Пример данных">
+
+```json
+{
+  "id": "0d8111f0-0af6-4300-86e8-492bc89a5b65",
+  "type": "call_result",
+  "organizationId": "120d1ba4-7bb1-4af5-bf5a-218f69261f35",
+  "timestamp": "2025-04-16T15:47:37.705Z",
+  "callList": {
+    "id": "a41cfb86-8b12-425a-96aa-9dd476f240f6",
+    "organization": {
+      "id": "120d1ba4-7bb1-4af5-bf5a-218f69261f35",
+      "name": "DMP",
+      "createdBy": "b34b8c7e-2c7b-4b63-bd0f-4ed568b122ae",
+      "createdAt": "2025-03-09T11:05:04.773Z",
+      "updatedAt": "2025-03-09T11:05:04.852Z"
+    },
+    "createdAt": "2025-03-09T10:57:26.812Z",
+    "updatedAt": "2025-04-16T11:05:51.329Z",
+    "name": "DMP",
+    "description": null,
+    "status": "active",
+    "createdBy": "b34b8c7e-2c7b-4b63-bd0f-4ed568b122ae"
+  },
+  "call": {
+    "id": "35f14673-671b-4eef-92ad-5a073fc7cad7",
+    "startedAt": "2025-05-12T13:57:22.300Z",
+    "connectedAt": "2025-05-12T13:57:33.179Z", 
+    "endedAt": "2025-05-12T14:03:16.648Z",
+    "duration": 343469,
+    "status": "completed",
+    "type": "outgoing",
+    "hangupReason": "hangup",
+    "callDetails": {
+      "channelId": "f1e677b5-aaac-44aa-be96-0701a873a5fd",
+      "chatHistory": [
+        {"role": "user", "content": "..."},
+        {"role": "assistant", "content": "Алло... "},
+        // ... остальные сообщения чата
+      ]
+    },
+    "agreements": {
+      "isCommit": true,
+      "agreements": "Договорились скинуть ссылку на пробные уроки в телеграм",
+      "client_name": "",
+      "client_facts": "Клиент в 10 классе, интересуется химией, планирует поступать на химфак. Сейчас занимается с репетитором по математике и русскому, нарешивает задания. Ищет онлайн-школу на лето.",
+      "agreements_time": "2025-05-12 17:03:00",
+      "agreements_time_local": "2025-05-12 17:03:00",
+      "status": "transfer",
+      "lead_destination": "sales",
+      "smsText": "Привет! Ясмина из \"новой школы\". Пришлю Вам ссылку на пробные уроки по химии, как договорились. Учту, что Вы в 10 классе. Хорошего дня!"
+    },
+    "callSession": {
+      "id": "daeb15e0-b186-4afc-b8b9-1c081bf49a10",
+      "createdAt": "2025-05-12T13:57:22.300Z",
+      "updatedAt": "2025-05-12T14:03:20.374Z",
+      "contact": "[Object]",
+      "attempts": 1,
+      "status": "completed",
+      "calls": [],
+      "priority": 0,
+      "attemptsLeft": 2
+    }
+  },
+  "contact": {
+    "id": "c68f7928-a383-41da-be5d-e60c8c44a5d9",
+    "phone": "79996662211",
+    "blacklist": false,
+    "dadataPhoneInfo": {
+      "type": "Мобильный",
+      "phone": "+7 999 666-22-11",
+      "region": "Рязанская область",
+      "provider": "ПАО \"МТС\"",
+      "timezone": "UTC+3"
+    },
+    "tags": ["dmp.one"],
+    "additionalFields": {
+      "ip": "2a00:1fa0:c220:176b:e5a7:fb0c:f53c:c4e7",
+      "page": "https://dmp.one/",
+      "phone": "79996662211",
+      "website": "dmp.one"
+    }
+  }
+}
+```
+
+</Expandable>
+
+### Описание полей
+
+<Accordion title="Основные поля события">
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `id` | string | Уникальный идентификатор события |
+| `type` | string | Тип события (call_result) |
+| `organizationId` | string | ID организации, в которой произошло событие |
+| `timestamp` | string | Время события в формате ISO 8601 |
+
+</Accordion>
+
+<Accordion title="Данные колл-листа">
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `callList.id` | string | ID колл-листа, в рамках которого был совершен звонок |
+| `callList.name` | string | Название колл-листа |
+| `callList.status` | string | Статус колл-листа |
+
+</Accordion>
+
+<Accordion title="Данные звонка">
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `call.id` | string | Уникальный идентификатор звонка |
+| `call.startedAt` | string | Время начала звонка |
+| `call.connectedAt` | string | Время соединения звонка |
+| `call.endedAt` | string | Время завершения звонка |
+| `call.duration` | number | Длительность звонка в миллисекундах |
+| `call.status` | string | Статус звонка (completed, failed, и т.д.) |
+| `call.type` | string | Тип звонка (outgoing, incoming) |
+| `call.hangupReason` | string | Причина завершения звонка |
+
+</Accordion>
+
+<Accordion title="Сессия звонка">
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `call.callSession.id` | string | Уникальный идентификатор сессии звонка |
+| `call.callSession.status` | string | Статус сессии звонка |
+| `call.callSession.attempts` | number | Количество попыток звонка |
+| `call.callSession.attemptsLeft` | number | Количество оставшихся попыток звонка |
+
+</Accordion>
+
+<Accordion title="Договоренности и результаты">
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `call.agreements.isCommit` | boolean | Флаг подтверждения договоренности |
+| `call.agreements.agreements` | string | Краткое описание договоренности |
+| `call.agreements.client_name` | string | Имя клиента |
+| `call.agreements.client_facts` | string | Факты о клиенте, собранные во время разговора |
+| `call.agreements.need_callback` | boolean | Флаг необходимости обратного звонка |
+| `call.agreements.interest_level` | string | Уровень заинтересованности клиента |
+| `call.agreements.agreements_time` | string | Время договоренности в формате "YYYY-MM-DD HH:MM:SS" |
+| `call.agreements.agreements_time_local` | string | Локальное время договоренности |
+
+</Accordion>
+
+<Accordion title="Данные контакта">
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `contact.id` | string | ID контакта |
+| `contact.phone` | string | Номер телефона клиента |
+| `contact.blacklist` | boolean | Флаг нахождения в черном списке |
+| `contact.dadataPhoneInfo` | object | Информация о телефоне из сервиса DaData |
+| `contact.tags` | array | Теги, привязанные к контакту |
+| `contact.additionalFields` | object | Дополнительные данные о контакте |
+
+</Accordion>
+
+## Рекомендации по реализации
+
+<CardGroup cols={2}>
+  <Card title="Быстрый ответ" icon="zap">
+    Ваш сервер должен отвечать кодом 200 OK в течение 10 секунд
+  </Card>
+  <Card title="Использование очередей" icon="layers">
+    Для обработки вебхуков в фоновом режиме рекомендуется использовать очереди
+  </Card>
+  <Card title="Идемпотентность" icon="refresh-cw">
+    Обрабатывайте вебхуки идемпотентно, так как одно событие может быть отправлено несколько раз
+  </Card>
+  <Card title="Проверка подписей" icon="shield-check">
+    Всегда проверяйте подпись запроса для обеспечения безопасности
+  </Card>
+</CardGroup>
+
+<Info>
+**Логирование**: Сохраняйте полученные запросы для отладки и аудита.
+</Info>
+
+## Устранение неполадок
+
+### Распространенные ошибки
+
+| Код ошибки | Описание | Решение |
+|------------|----------|---------|
+| 403 Forbidden | Доступ запрещен | Проверьте доступность сервера и настройки файрвола |
+| 404 Not Found | URL не найден | Проверьте правильность URL |
+| 5xx Server Error | Ошибка сервера | Проверьте логи вашего сервера |
+| Timeout | Превышено время ожидания | Оптимизируйте обработку запросов, используйте фоновые задачи |
+
+### Отладка
+
+Для отладки вебхуков рекомендуется:
+
+<Steps>
+  <Step title="Локальная разработка">
+    Использовать инструменты для локальной разработки, такие как ngrok или localtunnel
+  </Step>
+  <Step title="Логирование">
+    Логировать все полученные запросы вебхуков
+  </Step>
+  <Step title="Проверка подписи">
+    Проверять валидность подписи
+  </Step>
+</Steps>
+
+### Пропущенные события
+
+Если вы не получаете события:
+
+<Checklist>
+  <Check>Проверьте, что вебхук активен в панели управления</Check>
+  <Check>Убедитесь, что ваш сервер работает и доступен</Check>
+  <Check>Проверьте логи ошибок на вашем сервере</Check>
+</Checklist>
+
+<Note>
+При возникновении проблем с вебхуками и необходимости более детальной информации, пожалуйста, свяжитесь с нашей технической поддержкой.
+</Note> 

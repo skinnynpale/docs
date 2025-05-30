@@ -135,6 +135,15 @@
             "pages": ["legal/legal-information"]
           }
         ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API",
+            "pages": ["api-ref/webhooks", "api-ref/contact-transfer"]
+          }
+        ]
       }
     ]
   },
@@ -152,5 +161,24 @@
   },
   "icons": {
     "library": "lucide"
+  },
+  "navbar": {
+    "links": [
+      {
+        "icon": "telegram",
+        "label": "новости",
+        "href": "https://t.me/sasha_platform"
+      },
+      {
+        "icon": "message-circle",
+        "label": "коммьюнти",
+        "href": "https://t.me/SashaAIChat"
+      },
+      {
+        "icon": "square-dashed-mouse-pointer",
+        "label": "платформа",
+        "href": "https://platform.trysasha.ru"
+      }
+    ]
   }
 }
