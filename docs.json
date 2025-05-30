@@ -137,10 +137,10 @@
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "API Интеграции",
         "groups": [
           {
-            "group": "API",
+            "group": "API Интеграции",
             "pages": ["api-ref/webhooks", "api-ref/contact-transfer"]
           }
         ]
