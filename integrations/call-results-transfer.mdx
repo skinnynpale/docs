@@ -1,6 +1,6 @@
 ---
-title: "Передача лидов"
-description: "Настройка интеграций для передачи результатов звонков"
+title: "Передача результатов звонков"
+description: "Настройка интеграций для передачи результатов обзвона в CRM и другие системы"
 ---
 
 Саша умеет передавать лидов по API, в Telegram, по почте или напрямую в Битрикс 24. 
@@ -16,16 +16,24 @@ description: "Настройка интеграций для передачи р
 Для настройки вебхуков:
 
 1. Перейдите в раздел «Колл-листы»
+<img src="/images/integrations/call-results-transfer/1.png" />
+
 2. Выберите нужный колл-лист
+<img src="/images/integrations/call-results-transfer/2.png" />
+
 3. Перейдите в подраздел «Вебхуки»
+<img src="/images/integrations/call-results-transfer/3.png" />
 
 ## Доступные интеграции
 
 ### Интеграция по API
 
 В рамках платформы вы можете самостоятельно собрать микросервис, интегрирующий Сашу с любым каналом получения заявок: будь то Google Sheets или нишевая CRM-система.
+<img src="/images/integrations/call-results-transfer/4.png" />
 
 Для этого воспользуйтесь интеграцией по API.
+<img src="/images/integrations/call-results-transfer/5.png" />
+
 
 ### Интеграция с Telegram
 
@@ -34,14 +42,26 @@ description: "Настройка интеграций для передачи р
 #### Настройка:
 
 1. Перейдите в раздел «Колл-листы», выберите нужный колл-лист и нажмите на подраздел «Вебхуки»
+<img src="/images/integrations/call-results-transfer/6.png" />
+
 2. Нажмите на кнопку «Создать вебхук». В всплывшем окне выберите пункт «Telegram»
+<img src="/images/integrations/call-results-transfer/7.png" />
+
 3. Добавьте бота @SashaStatus_bot (Бот SashaAI) в новую или ранее созданную группу или канал в телеграмме
+<img src="/images/integrations/call-results-transfer/8.png" />
+
 4. После добавления бот автоматически отправит вам ID вашего канала
+
 5. Скопируйте и вставьте ID канала в всплывающем окне на платформе
+<img src="/images/integrations/call-results-transfer/9.png" />
+
 6. Выберите тип события: 
    - **звонки** — если хотите получать уведомление о каждой инициации вызова
    - **лиды** — если хотите получать исключительно лидов
+<img src="/images/integrations/call-results-transfer/10.png" />
+
 7. Нажмите на кнопку «Создать»
+<img src="/images/integrations/call-results-transfer/11.png" />
 
 Готово! Вы можете проверить интеграцию с помощью функции «Тестовый запрос».
 
@@ -50,8 +70,11 @@ description: "Настройка интеграций для передачи р
 #### Настройка:
 
 1. Перейдите в раздел «Колл-листы», выберите нужный колл-лист и нажмите на подраздел «Вебхуки»
+<img src="/images/integrations/call-results-transfer/12.png" />
 2. Нажмите на кнопку «Создать вебхук». В всплывшем окне выберите пункт «Email»
+<img src="/images/integrations/call-results-transfer/13.png" />
 3. Укажите адрес вашего почтового ящика и нажмите на кнопку «Создать»
+<img src="/images/integrations/call-results-transfer/14.png" />
 
 Готово! Вы можете проверить интеграцию с помощью функции «Тестовый запрос».
 
