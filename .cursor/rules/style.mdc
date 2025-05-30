@@ -3,7 +3,34 @@ description:
 globs: 
 alwaysApply: true
 ---
-Используй пожалуйста стили компоненты например как эти страницы [markdown.mdx](mdc:essentials/markdown.mdx) [code.mdx](mdc:essentials/code.mdx) [images.mdx](mdc:essentials/images.mdx) [navigation.mdx](mdc:essentials/navigation.mdx) [settings.mdx](mdc:essentials/settings.mdx) [call-lists.mdx](mdc:call-launch/call-lists.mdx)
+В проекте мы используем mintlify, это движок для документации.
+у него есть такие компоненты
 
-Исключения:
+Components
+Headers and Text
+Images and Embeds
+Lists and Tables
+Code
+Reusable Snippets
+Accordions
+(Callouts) [callouts.mdx](mdc:essentials/callouts.mdx)
+Cards [cards.mdx](mdc:essentials/cards.mdx)
+Columns
+Code Groups
+Examples
+Expandables
+Fields
+Frames
+Icons
+Mermaid
+Panel
+Steps
+Tabs
+Tooltips
+Update
+
+а так же используй пожалуйста стили компоненты например как эти страницы [markdown.mdx](mdc:essentials/markdown.mdx) [code.mdx](mdc:essentials/code.mdx) [images.mdx](mdc:essentials/images.mdx) [navigation.mdx](mdc:essentials/navigation.mdx) [settings.mdx](mdc:essentials/settings.mdx) [call-lists.mdx](mdc:call-launch/call-lists.mdx)
+
+Правила:
 1. Не используем иконки для файла
+2. Используем иконки из lucide (в свойствах icon="...")
