@@ -18,7 +18,7 @@
             "pages": ["index", "quickstart"]
           },
           {
-            "group": "Подготовка к лидогенерации",
+            "group": "Главный раздел",
             "pages": [
               "lead-generation/why-calls-dont-work",
               "lead-generation/outbound-sales-psychology",
@@ -26,19 +26,18 @@
             ]
           },
           {
-            "group": "Обучение искусственного интеллекта",
+            "group": "Обучение нейросети",
             "pages": [
               "ai-training/quick-start",
-              {
-                "group": "Как сделать так, чтобы вы с Сашей поняли друг друга?",
-                "pages": [
-                  "ai-training/understanding-sasha",
-                  "ai-training/what-sasha-knows",
-                  "ai-training/how-to-configure"
-                ]
-              },
+              "ai-training/what-sasha-knows",
+              "ai-training/how-to-configure",
               "ai-training/success-factors",
-              "ai-training/testing",
+              "ai-training/testing"
+            ]
+          },
+          {
+            "group": "Продвинутый уровень",
+            "pages": [
               "ai-training/improving-quality",
               "ai-training/knowledge-base",
               "ai-training/voice-settings",
@@ -47,17 +46,12 @@
             ]
           },
           {
-            "group": "Типовые ошибки: путь к отрицательному ROMI",
+            "group": "Типовые ошибки",
             "pages": [
               "common-mistakes/approach-to-calling",
-              {
-                "group": "Обучение искусственного интеллекта",
-                "pages": [
-                  "common-mistakes/ai-training/template-approach",
-                  "common-mistakes/ai-training/overtraining",
-                  "common-mistakes/ai-training/configuring-unconfigurable"
-                ]
-              },
+              "common-mistakes/ai-training/template-approach",
+              "common-mistakes/ai-training/overtraining",
+              "common-mistakes/ai-training/configuring-unconfigurable",
               "common-mistakes/launching-calls"
             ]
           },
@@ -66,7 +60,7 @@
             "pages": [
               "integrations/telephony",
               {
-                "group": "Каналы коммуникаций",
+                "group": "Мессенджеры",
                 "pages": [
                   "integrations/communication-channels/closing-messages",
                   "integrations/communication-channels/sms",
