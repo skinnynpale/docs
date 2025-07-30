@@ -165,9 +165,6 @@
   "icons": {
     "library": "lucide"
   },
-  "contextual": {
-    "options": ["copy", "view"]
-  },
   "navbar": {
     "links": [
       {
